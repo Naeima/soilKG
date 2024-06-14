@@ -1,0 +1,60 @@
+prefixes:
+  rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+  xsd: "http://www.w3.org/2001/XMLSchema#"
+  foo: "https://w3id.org/def/foo#"
+  dcterms: "http://purl.org/dc/terms/"
+  sosa: "http://www.w3.org/ns/sosa/"
+  pos: "http://www.w3.org/2003/01/geo/wgs84_pos#"
+
+mappings:
+  soilSampleMapping:
+    sources:
+      - ['soildataset.csv~csv']
+    s: "foo{Identifier}"
+    po:
+      - [a, foo:SoilObservation]
+      - [foo:Identifier, "{Identifier}"]
+      - [foo:Site, "{Site}"]
+      - [foo:LandUse, "{Land_Use}"]
+      - [foo:PlotName, "{Plot_Name}"]
+      - [foo:Subplot, "{Subplot}"]
+      - [foo:Horizon, "{Horizon}"]
+      - [foo:SoilPH, "{Soil_pH}"^^xsd:double]
+      - [foo:TotalC, "{Total_C}"^^xsd:double]
+      - [foo:TotalN, "{Total_N}"^^xsd:double]
+      - [foo:TotalP, "{Total_P}"^^xsd:double]
+      - [foo:inorganicP, "{inorganic_P}"^^xsd:double]
+      - [foo:CNRatio, "{C:N}"^^xsd:double]
+      - [foo:Sand, "{Sand}"^^xsd:double]
+      - [foo:Silt, "{Silt}"^^xsd:double]
+      - [foo:Clay, "{Clay}"^^xsd:double]
+
+
+Explanation:
+prefixes: Defines the namespaces used in the mappings.
+mappings: Describes how to map the CSV data to RDF triples.
+sources: Specifies the source file and format.
+s: Defines the subject URI pattern for each soil sample.
+po: Lists the predicates and objects for each soil sample, mapping CSV columns to properties in the FOO ontology.
+Running the YARRRML Mapping
+To use this YARRRML mapping, you need a YARRRML processor like yarrrml-parser which converts YARRRML to RML. You can then use an RML engine like RMLMapper to generate the RDF data.
+
+Example:
+Install yarrrml-parser:
+
+bash
+Copy code
+npm install -g yarrrml-parser
+Convert YARRRML to RML:
+
+bash
+Copy code
+yarrrml-parser -i soil_mapping.yaml -o soil_mapping.rml.ttl
+Run the RMLMapper to generate RDF:
+
+Download RMLMapper from here.
+Run the RMLMapper with the generated RML file:
+bash
+Copy code
+java -jar rmlmapper.jar -m soil_mapping.rml.ttl -o soildataset.ttl
